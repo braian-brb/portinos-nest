@@ -8,7 +8,6 @@ export class CotizacionesService {
   async findAll(dolar?: Dolar, evolucion?: boolean) {
     const cacheFiles = this.cacheService.getFiles(dolar, evolucion);
     const cache = await this.cacheService.getContentCache(cacheFiles);
-    this.cacheService.deleteAllCacheIfTimeOut();
     if (cache) {
       return cache;
     }

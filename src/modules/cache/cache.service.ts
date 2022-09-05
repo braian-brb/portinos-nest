@@ -6,6 +6,7 @@ export class CacheService {
   cacheTimeLimit = 30;
 
   getContentCache(cacheFile) {
+    this.deleteAllCacheIfTimeOut();
     if (fs.existsSync(cacheFile)) {
       const cache = fs.readFileSync(cacheFile, 'utf8');
       return JSON.parse(cache);
