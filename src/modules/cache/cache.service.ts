@@ -4,17 +4,27 @@ import * as fs from 'fs';
 @Injectable()
 export class CacheService {
   cacheTimeLimit = 30;
+  dolar: string;
+  evolucion: boolean;
 
-  getContentCache(cacheFile) {
+  setDolarAndEvolucion(dolar, evolucion) {
+    this.dolar = dolar;
+    this.evolucion = evolucion;
+  }
+
+  getContentCache(dolar, evolucion) {
+    this.setDolarAndEvolucion(dolar, evolucion);
     this.deleteAllCacheIfTimeOut();
+    const cacheFile = this.getFiles(dolar, evolucion);
     if (fs.existsSync(cacheFile)) {
       const cache = fs.readFileSync(cacheFile, 'utf8');
-      return JSON.parse(cache);
+      return cache;
     }
-    return false;
+    return null;
   }
 
   getFiles(dolar, evolucion) {
+    this.setDolarAndEvolucion(dolar, evolucion);
     let cacheFile: string;
     if (!fs.existsSync('./temp')) {
       fs.mkdirSync('./temp');
@@ -32,7 +42,8 @@ export class CacheService {
     return cacheFile;
   }
 
-  saveResponse(cacheFile, response) {
+  saveResponse(response) {
+    const cacheFile = this.getFiles(this.dolar, this.evolucion);
     fs.writeFileSync(cacheFile, JSON.stringify(response));
   }
 

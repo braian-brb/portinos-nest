@@ -6,8 +6,7 @@ import { CacheService } from '../cache/cache.service';
 export class CotizacionesService {
   constructor(private readonly cacheService: CacheService) {}
   async findAll(dolar?: Dolar, evolucion?: boolean) {
-    const cacheFiles = this.cacheService.getFiles(dolar, evolucion);
-    const cache = await this.cacheService.getContentCache(cacheFiles);
+    const cache = this.cacheService.getContentCache(dolar, evolucion);
     if (cache) {
       return cache;
     }
@@ -19,7 +18,7 @@ export class CotizacionesService {
         return data;
       }),
     );
-    this.cacheService.saveResponse(cacheFiles, cotizaciones);
+    this.cacheService.saveResponse(cotizaciones);
     return cotizaciones;
   }
 }
