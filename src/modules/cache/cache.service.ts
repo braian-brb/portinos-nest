@@ -9,8 +9,8 @@ export class CacheService {
 
   getContentCache(dolar, evolucion) {
     this.#setDolarAndEvolucion(dolar, evolucion);
-    this.#deleteAllCacheIfTimeOut();
     const cacheFile = this.#getFiles(dolar, evolucion);
+    this.#deleteAllCacheIfTimeOut();
     if (fs.existsSync(cacheFile)) {
       const cache = fs.readFileSync(cacheFile, 'utf8');
       return cache;
@@ -66,7 +66,7 @@ export class CacheService {
     return diffTimeInSeconds;
   }
 
-  setCacheTimeLimit(time) {
+  setCacheTimeLimit(time: number) {
     this.#cacheTimeLimit = time;
   }
 }
